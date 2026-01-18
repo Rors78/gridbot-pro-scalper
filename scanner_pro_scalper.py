@@ -50,13 +50,30 @@ def ema(series, period):
     return ema_val
 
 def rsi(series, period=14):
+    """Calculate RSI (Relative Strength Index) for a price series."""
+    if len(series) < period + 1:
+        return 50  # Not enough data, return neutral
+
+    # Calculate price changes
     deltas = [series[i] - series[i-1] for i in range(1, len(series))]
-    gains = [d for d in deltas if d>0]
-    losses = [-d for d in deltas if d<0]
-    avg_gain = sum(gains)/period if len(gains)>=period else sum(gains)/period
-    avg_loss = sum(losses)/period if len(losses)>=period else sum(losses)/period
-    rs = avg_gain/(avg_loss or 1)
-    return 100 - (100/(1+rs))
+
+    # Use the last 'period' deltas
+    recent_deltas = deltas[-period:]
+
+    # Separate gains and losses (keeping zeros for days with no movement)
+    gains = [d if d > 0 else 0 for d in recent_deltas]
+    losses = [-d if d < 0 else 0 for d in recent_deltas]
+
+    # Calculate averages
+    avg_gain = sum(gains) / period
+    avg_loss = sum(losses) / period
+
+    # Handle edge case: no losses = RSI is 100
+    if avg_loss == 0:
+        return 100
+
+    rs = avg_gain / avg_loss
+    return 100 - (100 / (1 + rs))
 
 def fetch_pairs():
     info = client.get_exchange_info()
