@@ -17,6 +17,8 @@ This bot is specifically designed to meet US regulatory requirements:
 
 ---
 
+> **API keys are optional.** Paper/read-only mode uses the public REST API — no account or key required. Keys are only needed for live order execution.
+
 ## Features
 
 - **Paper Trading Mode** - Test strategies with $1000 virtual balance before going live
@@ -51,13 +53,25 @@ PAPER_TRADING = False  # Change this in scanner_pro_scalper.py
 
 ## Setup
 
-```bash
+**Windows:**
+```powershell
 pip install -r requirements.txt
 ```
 
-**For paper trading (no API keys needed):**
+**Linux/macOS:**
 ```bash
+pip3 install -r requirements.txt
+```
+
+**For paper trading (no API keys needed):**
+**Windows:**
+```powershell
 python scanner_pro_scalper.py
+```
+
+**Linux/macOS:**
+```bash
+python3 scanner_pro_scalper.py
 ```
 
 **For live trading:**
